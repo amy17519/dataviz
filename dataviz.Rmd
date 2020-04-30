@@ -62,8 +62,8 @@ You can even build amazing graphs *_without coding_* using Tableau etc
 - Strategy
 
 - Visualization Process 
-  - Making *_exploratory_* Graph*_s_*
-  - Making a *_confirmatory_* Graph
+  - Making *_Exploratory_* Graphs
+  - Making *_Confirmatory_* Graphs
 
 - Toolbox
 
@@ -98,7 +98,7 @@ If you know some grammar of graphics, you don't need to know all coding syntax o
 # History - Grammar of Graphics
 
 .pull-left[
-- Late 1990s, the concept was introduced by Leland Wilkinson. See [The Grammar of Graphics 2nd Edition, 2005](https://www.springer.com/gp/book/9780387245447). 
+- Late 1990s: the concept was introduced by Leland Wilkinson. See [The Grammar of Graphics 2nd Edition, 2005](https://www.springer.com/gp/book/9780387245447). 
 
 - 2000s: Hadley Wickham built the R visualization library ggplot2 based on grammar of graphics with modifications. He also published [A Layered Grammar of Graphics, 2010](http://vita.had.co.nz/papers/layered-grammar.html). 
 
@@ -211,8 +211,7 @@ ggplot(data = CA_Measles) +
 ## Error in order(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,  : 
 ## argument 3 is not a vector
 
-ggplot(data = CA_Measles, aes(x = year, y = count)) + 
-  geom_line() 
+ggplot(data = CA_Measles, aes(x = year, y = count))
 # No error, but you will get an empty ggplot canvas
 ```
 ]
@@ -245,8 +244,7 @@ ggplot(aes(x = year, y = count)) +
 * ## Error in order(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,  : 
 * ## argument 3 is not a vector
 
-ggplot(data = CA_Measles, aes(x = year, y = count)) + 
-  geom_line() 
+ggplot(data = CA_Measles, aes(x = year, y = count))
 # No error, but you will get an empty ggplot canvas
 ```
 ]
@@ -279,8 +277,7 @@ ggplot(data = CA_Measles) +
 ## Error in order(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,  : 
 ## argument 3 is not a vector
 
-* ggplot(data = CA_Measles, aes(x = year, y = count)) + 
-*  geom_line() 
+* ggplot(data = CA_Measles, aes(x = year, y = count))
 * # No error, but you will get an empty ggplot canvas
 ```
 ]
@@ -341,7 +338,7 @@ to be able to say that we looked one layer deeper, and found nothing, is a defin
 
 - Make LOTS of exploratory graphs, and only present those that can convince yourself and guide the audience through your data analysis
 
-- In this stage, we only care about *_informativeness_*! We will worry about Clarity and Aesthestics in next statge.
+- In this stage, we only care about *_informativeness_*! We will worry about Clarity and Aesthestics in next stage.
 
 ---
 
@@ -468,7 +465,7 @@ ggplot(data = df_measles, aes(x = year, y = count / (population / 1000000))) +
 
 ---
 
-# Making a Confirmatory Graph
+# Making Confirmatory Graphs
 
 - Few exploratory graphs need to become confirmatory graphs
 
@@ -478,7 +475,7 @@ ggplot(data = df_measles, aes(x = year, y = count / (population / 1000000))) +
 
 ---
 
-# Making a Confirmatory Graph -- Measles
+# Making Confirmatory Graphs -- Measles
 
 .left-column[
 - **Data**
@@ -501,7 +498,7 @@ ggplot(data = df_avg_pop, aes(x = reorder(state, mean_pop), y = mean_pop)) +
 
 ---
 
-# Making a Confirmatory Graph -- Measles
+# Making Confirmatory Graphs -- Measles
 
 .left-column[
 - **Data**
