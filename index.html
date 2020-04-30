@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Visualization</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Amy Tzu-Yu Chen" />
+    <meta name="date" content="2020-04-29" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Visualization
+## Lesser known intro
+### Amy Tzu-Yu Chen
+### 2020-04-29
+
+---
+
+# About Me
+
+- UCLA'16, Statistics
+
+- Data Scientist at System1 &amp; Computational Linguistics MS Student at University of Washington
+
+- Happy R user since STAT 20
+
+- Find me at amy17519 @ Twitter, Github, and LinkedIn
+
+---
+# Why is this a "lesser known" intro
+
+You can easily find tutorials if you google "how to use "blah blah" visualization library"
+&lt;br /&gt;
+&lt;br /&gt;
+(🤭 and just copy and paste code! It works!)
+
+--
+
+You can even build amazing graphs *_without coding_* using Tableau etc
+&lt;br /&gt;
+&lt;br /&gt;
+(🤭 and they look nice! Nicer than my ggplots sometimes!)
+
+--
+
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+🤔... However, having a deeper understanding on visualization tools and process is a great asset for data practitioners
+
+--
+
+🤩 Know behind-the-library design philosophy ➡️ helps you understand a diverse range of graphics and powerful tools faster
+
+--
+
+🤩 Practice visualization process ➡️ inform yourself, then educate your audience
+
+
+
+---
+# Agenda
+
+- Grammar of Graphics
+
+- Strategy
+
+- Visualization Process 
+  - Making *_exploratory_* Graph*_s_*
+  - Making a *_confirmatory_* Graph
+
+- Toolbox
+
+- Resources
+
+
+---
+class: center, middle, inverse
+
+## Grammar of Graphics
+
+---
+
+# The Beauty of Grammar of Graphics
+
+In languages, grammar keeps things in order. 
+
+&lt;br /&gt;
+
+--
+
+If you know some grammar, you don't need to know all the vocabularies to speak.
+
+&lt;br /&gt;
+
+--
+If you know some grammar of graphics, you don't need to know all coding syntax or graph types to make an informative graph
+
+
+---
+
+# History - Grammar of Graphics
+
+.pull-left[
+- Late 1990s, the concept was introduced by Leland Wilkinson. See [The Grammar of Graphics 2nd Edition, 2005](https://www.springer.com/gp/book/9780387245447). 
+
+- 2000s: Hadley Wickham built the R visualization library ggplot2 based on grammar of graphics with modifications. He also published [A Layered Grammar of Graphics, 2010](http://vita.had.co.nz/papers/layered-grammar.html). 
+
+- Many applications in visualization libraries/projects in different languages.
+]
+
+.pull-right[
+&lt;img src="img/01grammar-mapping2.png" width=60%&gt;
+]
+
+---
+
+# Grammar of Graphics - Components of Grammar
+
+.center[
+&lt;img src="img/01grammar-of-graphics2.png" width = 60% height = 60%&gt;
+]
+
+---
+
+# Example Data
+
+
+
+
+
+```r
+# df_measles comes from dataset dslabs::us_contagious_diseases
+str(df_measles)
+```
+
+```
+## Classes 'data.table' and 'data.frame':	3825 obs. of  6 variables:
+##  $ disease        : Factor w/ 7 levels "Hepatitis A",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ state          : Factor w/ 51 levels "Alabama","Alaska",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ year           : num  1928 1929 1930 1931 1932 ...
+##  $ weeks_reporting: num  52 49 52 49 41 51 52 49 40 49 ...
+##  $ count          : num  8843 2959 4156 8934 270 ...
+##  $ population     : num  2589923 2619131 2646248 2670818 2693027 ...
+##  - attr(*, ".internal.selfref")=&lt;externalptr&gt;
+```
+
+
+```r
+head(df_measles)
+```
+
+```
+##    disease   state year weeks_reporting count population
+## 1: Measles Alabama 1928              52  8843    2589923
+## 2: Measles Alabama 1929              49  2959    2619131
+## 3: Measles Alabama 1930              52  4156    2646248
+## 4: Measles Alabama 1931              49  8934    2670818
+## 5: Measles Alabama 1932              41   270    2693027
+## 6: Measles Alabama 1933              51  1735    2713243
+```
+
+
+---
+
+# Grammar of Graphics
+
+.left-column[
+- Data
+- Aesthestics
+- Geometry
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+
+```r
+# Annual reported Measles cases in California
+ggplot(data = CA_Measles, aes(x = year, y = count)) +
+  geom_line()
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-4-1.png" width="400px" /&gt;
+
+
+---
+
+# Grammar of Graphics
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+
+```r
+# Annual reported Measles cases in California
+ggplot(data = CA_Measles, aes(x = year, y = count)) +
+  geom_line()
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-5-1.png" width="400px" /&gt;
+
+---
+
+# Grammar of Graphics
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+.right-column[
+
+#### Data, Aesthestics(for input data), and Geometry are required to make a minimal graph
+
+```r
+* ggplot(aes(x = year, y = count)) + 
+*  geom_line() 
+* ## Error: `data` must be a data frame.... 🤔
+
+ggplot(data = CA_Measles) + 
+  geom_line() 
+## Error in order(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,  : 
+## argument 3 is not a vector
+
+ggplot(data = CA_Measles, aes(x = year, y = count)) + 
+  geom_line() 
+# No error, but you will get an empty ggplot canvas
+```
+]
+
+---
+
+# Grammar of Graphics
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+.right-column[
+
+#### Data, Aesthestics(for input data), and Geometry are required to make a minimal graph
+
+```r
+ggplot(aes(x = year, y = count)) + 
+  geom_line() 
+## Error: `data` must be a data frame.... 🤔
+
+* ggplot(data = CA_Measles) + 
+*  geom_line() 
+* ## Error in order(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,  : 
+* ## argument 3 is not a vector
+
+ggplot(data = CA_Measles, aes(x = year, y = count)) + 
+  geom_line() 
+# No error, but you will get an empty ggplot canvas
+```
+]
+
+---
+
+# Grammar of Graphics
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+.right-column[
+
+#### Data, Aesthestics(for input data), and Geometry are required to make a minimal graph
+
+```r
+ggplot(aes(x = year, y = count)) + 
+  geom_line() 
+## Error: `data` must be a data frame.... 🤔
+
+ggplot(data = CA_Measles) + 
+ geom_line() 
+## Error in order(c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L,  : 
+## argument 3 is not a vector
+
+* ggplot(data = CA_Measles, aes(x = year, y = count)) + 
+*  geom_line() 
+* # No error, but you will get an empty ggplot canvas
+```
+]
+
+---
+
+# Different Library, Similar Syntax, Same Basic Components
+
+```r
+library(plotly)
+plot_ly(CA_Measles, x = ~year, y = ~count, type = 'scatter', mode = 'lines')
+
+library(highcharter)
+hchart(CA_Measles, 'line', hcaes(x = year, y = count)
+```
+
+---
+class: center, middle, inverse
+
+## Strategy
+
+---
+
+.center[
+
+&lt;img src="img/03choosing-a-good-chart-09.png", width = 80%, height = 80%&gt;
+
+]
+
+---
+
+## Bottomline
+
+- Focus on showing data patterns using an appropriate ~~fancy~~ graph
+
+- *_Informativeness_* &gt;&gt; Clarity &gt;&gt; Aesthestics
+
+- Data visualization could be subjective, but 
+&lt;blockquote&gt;
+The greatest value of a picture is when it forces us to notice what we never expected to see
+.right[-- &lt;cite&gt;John W. Tukey&lt;/cite&gt;]
+&lt;/blockquote&gt;
+-- as opposed to what we wanted to confirm.
+
+---
+class: center, middle, inverse
+
+## Visualization Process
+
+---
+
+# Making Exploratory Graphs
+
+&lt;blockquote&gt;
+to be able to say that we looked one layer deeper, and found nothing, is a definite step forward -- though not as far as to be able to say that we looked deeper and found thus-and-suck
+.right[-- &lt;cite&gt;John W. Tukey&lt;/cite&gt;]
+&lt;/blockquote&gt;
+
+- Make LOTS of exploratory graphs, and only present those that can convince yourself and guide the audience through your data analysis
+
+- In this stage, we only care about *_informativeness_*! We will worry about Clarity and Aesthestics in next statge.
+
+---
+
+# Making Exploratory Graphs - Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+
+```r
+ggplot(data = CA_Measles, aes(x = year, y = count)) +
+  geom_line()
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-6-1.png" width="400px" /&gt;
+
+---
+
+# Making Exploratory Graphs - Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- **Facets**
+- Coordinate
+- Theme
+]
+
+
+```r
+ggplot(data = df_measles, aes(x = year, y = count)) +
+  geom_line() +
+  facet_wrap(~state)
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-7-1.png" width="400px" /&gt;
+
+---
+
+# Making Exploratory Graphs - Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- Facets
+- Coordinate
+- Theme
+]
+
+
+```r
+df_avg_pop &lt;- df_measles[, .(mean_pop = mean(population, na.rm = TRUE)), state]
+ggplot(data = df_avg_pop, aes(x = state, y = mean_pop)) +
+  geom_col()
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-8-1.png" width="400px" /&gt;
+
+---
+
+# Making Exploratory Graphs - Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- **Facets**
+- Coordinate
+- Theme
+]
+
+
+```r
+ca_wy_noweight &lt;- ggplot(df_measles[state %in% c("California", "Wyoming")], 
+                     aes(x = year, y = count)) +
+                  geom_line() +
+                  facet_wrap(~state)
+ca_wy_weighted &lt;- ggplot(df_measles[state %in% c("California", "Wyoming")], 
+                     aes(x = year, y = count / (population / 1000000))) +
+                  geom_line() +
+                  facet_wrap(~state)
+```
+
+---
+
+# Making Exploratory Graphs - Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- **Facets**
+- Coordinate
+- Theme
+]
+
+
+```r
+library(patchwork)
+ca_wy_noweight / ca_wy_weighted
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-10-1.png" width="400px" /&gt;
+
+---
+
+# Making Exploratory Graphs - Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- **Facets**
+- Coordinate
+- Theme
+]
+
+
+```r
+ggplot(data = df_measles, aes(x = year, y = count / (population / 1000000))) +
+  geom_line() +
+  facet_wrap(~state)
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-11-1.png" width="400px" /&gt;
+
+---
+
+# Making a Confirmatory Graph
+
+- Few exploratory graphs need to become confirmatory graphs
+
+- Key findings or evidence in your data analysis that help draw conclusions or inform modeling decisions 
+
+- Now we have the information we want to share, we can work on Clarity and Aesthestics
+
+---
+
+# Making a Confirmatory Graph -- Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- **Facets**
+- **Coordinate**
+- **Theme**
+]
+
+
+```r
+ggplot(data = df_avg_pop, aes(x = reorder(state, mean_pop), y = mean_pop)) +
+  geom_col() + coord_flip() +
+  ggtitle("Average US State Population, 1928-2002") +
+  scale_y_continuous(labels = scales::comma) +
+  xlab("Avg Population") + ylab("State") +
+  theme_bw()
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-12-1.png" width="350px" /&gt;
+
+---
+
+# Making a Confirmatory Graph -- Measles
+
+.left-column[
+- **Data**
+- **Aesthestics**
+- **Geometry**
+- Stats
+- **Facets**
+- **Coordinate**
+- **Theme**
+]
+
+
+```r
+ggplot(data = df_measles, aes(x = year, y = count / (population / 1000000))) +
+  geom_line() + facet_wrap(~state) +
+  ggtitle("Measle Cases per Million People by State, 1928-2002") +
+  scale_y_continuous(labels = scales::comma) +
+  xlab("State") + ylab("Cases/1m Population") +
+  theme_bw()
+```
+
+&lt;img src="dataviz_files/figure-html/unnamed-chunk-13-1.png" width="350px" /&gt;
+
+---
+class: center, middle, inverse
+
+## Toolbox
+
+---
+
+# Visualization Toolbox
+
+- Lots of [ggplot](https://ggplot2.tidyverse.org) extensions
+  - [patchwork](https://github.com/thomasp85/patchwork) - arrange and stitch graphs together
+  - [gganimate](https://gganimate.com/articles/gganimate.html) - make animated ggplots
+  - [ggdendro](https://cran.r-project.org/web/packages/ggdendro/vignettes/ggdendro.html) - make dendrogram in ggplot
+  - [ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html) - display labels nicely
+  - [ggradar](https://github.com/ricardo-bion/ggradar) - radar chart
+  - [ggmap](https://github.com/dkahle/ggmap) - draw maps
+  - [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html) - arrange graphs to be publication ready
+  - [ggiraph](http://davidgohel.github.io/ggiraph/index.html) - make ggplot interactive
+  - [ggfacet](https://hafen.github.io/geofacet/) - facet on a map
+
+- Color Palettes
+  - [r-color-palettes](https://github.com/EmilHvitfeldt/r-color-palettes)
+  - [Wes Anderson Palettes](https://github.com/karthik/wesanderson)
+  - [html color codes](https://htmlcolorcodes.com/resources/best-color-palette-generators/) - if you really want to customize
+
+---
+
+# Visualization Toolbox
+
+- [Highcharter](http://jkunst.com/highcharter/)
+
+- [Dygraph](https://rstudio.github.io/dygraphs/)
+
+- [Plotly](https://github.com/ropensci/plotly)
+
+- [leaflet](https://rstudio.github.io/leaflet/) - Interactive maps
+
+- [Altair](https://github.com/altair-viz/altair) - Can show distribution in the highlighted region - Python only
+
+---
+class: center, middle, inverse
+
+## Resources
+
+---
+
+# Tutorials, Videos, Books, and Paper
+
+- Liz Sander - [Telling stories with data using the grammar of graphics](https://codewords.recurse.com/issues/six/telling-stories-with-data-using-the-grammar-of-graphics)
+
+- Hadley Wickham - [A Layered Grammar of Graphics](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+
+- Thomas Lin Pedersen - [ggplot2 Workshop](https://www.youtube.com/watch?v=h29g21z0a68) (video, 4.5hr tutorials with latest dev updates)
+
+- John W. Tukey - [Exploratory Data Analysis, Preface](https://books.google.com/books/about/Exploratory_Data_Analysis.html?id=UT9dAAAAIAAJ&amp;source=kp_book_description)
+
+- Dipanjan (DJ) Sarkar - [A Comprehensive Guide to the Grammar of Graphics for Effective Visualization of Multi-dimensional Data](https://towardsdatascience.com/a-comprehensive-guide-to-the-grammar-of-graphics-for-effective-visualization-of-multi-dimensional-1f92b4ed4149)
+---
+
+
+class: center, middle, inverse
+
+# Thanks!
+
+Slides created using the R package [**xaringan**](https://github.com/yihui/xaringan).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": true,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
