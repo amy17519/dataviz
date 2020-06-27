@@ -537,7 +537,7 @@ class: center, middle, inverse
   - [ggmap](https://github.com/dkahle/ggmap) - draw maps
   - [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html) - arrange graphs to be publication ready
   - [ggiraph](http://davidgohel.github.io/ggiraph/index.html) - make ggplot interactive
-  - [ggfacet](https://hafen.github.io/geofacet/) - facet on a map
+  - [geofacet](https://hafen.github.io/geofacet/) - facet on a map
 
 - Color Palettes
   - [r-color-palettes](https://github.com/EmilHvitfeldt/r-color-palettes)
