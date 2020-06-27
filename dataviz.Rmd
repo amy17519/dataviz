@@ -2,7 +2,7 @@
 title: "Data Visualization"
 subtitle: "Lesser known intro"
 author: "Amy Tzu-Yu Chen"
-date: "2020-04-29"
+date: "2020-06-27"
 output:
   xaringan::moon_reader:
     lib_dir: libs
